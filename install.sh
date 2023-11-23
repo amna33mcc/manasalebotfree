@@ -17,6 +17,9 @@ pip install termcolor
 pip install Unidecode
 pip install jdatetime
 pip install ipaddress
+pip install paramiko
+pip install psutil
+pip install pyopenssl --upgrade
 
 mkdir /root/botCh
 
