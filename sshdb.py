@@ -1,5 +1,5 @@
 import sqlite3
-sadad
+
 conn = sqlite3.connect('ssh.db')
 c = conn.cursor()
 
