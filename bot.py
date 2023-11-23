@@ -18,7 +18,7 @@ from unidecode import unidecode
 from random import randint, choice
 from pyrogram import Client, filters, enums
 from pyrogram.errors import NotAcceptable, BadRequest, FloodWait
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InputMediaPhoto, InputMediaVideo
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InputMediaPhoto, InputMediaVideo, InputMediaDocument
 
 
 session = "run"
@@ -48,9 +48,6 @@ folder = 'backup'
 checked_filtering, checked_connections, checked_users, checked_id, cache_list, seller_id, botusername, process_codes, online_check_spam, spam_session, password_retry, password_retry_time, plisio_retry, plisio_retry_time, plisio_attemp = ([] for i in range(15))
 cache, backup, run_backup, Filtering_system, run_filtering, notify_system, run_notify, backup_command, search_spam = ([False] for i in range(9))
 filter_name = ['root', 'Root', 'ROOT', 'ubuntu', 'Ubuntu', 'UBUNTU', 'centos', 'Centos', 'CentOS', 'user', 'User', 'Username', 'username']
-
-user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-headers = {"user-agent": user_agent}
 
 
 def sellers_id_add_list():
@@ -412,52 +409,6 @@ def plisio_attemp_del(chat_id):
     indexes = list(reversed(indexes))
     for i in indexes:
         del plisio_attemp[i]
-
-
-def check_host_api(host):
-    try:
-        node1 = "ir1.node.check-host.net"
-        node2 = "ir3.node.check-host.net"
-        node3 = "ir4.node.check-host.net"
-        node4 = "de1.node.check-host.net"
-        node5 = "fr2.node.check-host.net"
-        node6 = "us1.node.check-host.net"
-        url = f"https://check-host.net/check-ping?host={host}&node={node1}&node={node2}&node={node3}&node={node4}&node={node5}&node={node6}"
-        headers = {
-            'accept': 'application/json',
-            'user-agent': user_agent
-        }
-        r = requests.get(url, headers=headers)
-        if r.status_code == 200:
-            request_id = json.loads(r.text)['request_id']
-            sleep(20)
-            data = requests.get("https://check-host.net/check-result/" + request_id, headers=headers)
-            if data.status_code == 200:
-                results = json.loads(data.text)
-                for result in results[node1][0]:
-                    if result[0] == "OK":
-                        return False
-                for result in results[node2][0]:
-                    if result[0] == "OK":
-                        return False
-                for result in results[node3][0]:
-                    if result[0] == "OK":
-                        return False
-                for result in results[node4][0]:
-                    if result[0] == "OK":
-                        return True
-                for result in results[node5][0]:
-                    if result[0] == "OK":
-                        return True
-                for result in results[node6][0]:
-                    if result[0] == "OK":
-                        return True
-            else:
-                return False
-        else:
-            return False
-    except:
-        return False
 
 
 def Toman_USD():
@@ -1437,14 +1388,22 @@ def backup_cmd(bot, message):
         chat_id = message.chat.id
         msg = message.reply_text("Wait...").id
         files = ["All.txt", "ssh.db", "data.json", "Pannels.txt", "logs.txt", "nohup.out"]
-        logs = "✔️ انجام شد\n\nLogs:\n\n"
+        media = []
         for file in files:
-            try:
-                bot.send_document(chat_id, document=open(file, 'rb'), file_name=file)
-            except Exception as e:
-                logs += ("File: " + file + " " + str(e) + "\n")
-            sleep(0.2)
-        bot.send_message(chat_id, logs)
+            if Path(file).is_file() is True:
+                if os.stat(file).st_size != 0:
+                    media.append(InputMediaDocument(file))
+        try:
+            bot.send_media_group(chat_id, media)
+        except:
+            logs = "✔️ انجام شد\n\nLogs:\n\n"
+            for file in files:
+                try:
+                    bot.send_document(chat_id, document=open(file, 'rb'), file_name=file)
+                except Exception as e:
+                    logs += ("File: " + file + " " + str(e) + "\n")
+                sleep(0.2)
+            bot.send_message(chat_id, logs)
         bot.delete_messages(chat_id, msg)
         backup_command[0] = False
     else:
@@ -1748,13 +1707,15 @@ def text_private(bot, message):
                 rm = True
                 if host is not None:
                     if (password_retry.count(chat_id) == 5):
-                        timer = int(time()) - password_retry_time[password_retry.index(user)]
+                        timer = int(time()) - password_retry_time[password_retry.index(chat_id)]
                         if (timer <= 1800):
                             keyboard = [[InlineKeyboardButton("<<", callback_data='back')]]
                             reply_markup = InlineKeyboardMarkup(keyboard)
-                            text = f"شما بدلیل اسپم تا  {str((1800 + password_retry_time[password_retry.index(user)]) - int(time()))} ثانیه نمیتونین اطلاعات اکانتی رو ببینین"
+                            text = f"شما بدلیل اسپم تا  {str((1800 + password_retry_time[password_retry.index(chat_id)]) - int(time()))} ثانیه نمیتونین اطلاعات اکانتی رو ببینین"
                             message.reply_text(text, reply_markup=reply_markup)
                             return
+                        else:
+                            password_retry_del(chat_id)
                     port, username, password, panel, route_path, sshport, udgpw, remark = sshx.HOST_INFO(host)
                     settings = get_settings()
                     if check_exist_user(host, user) is False:
@@ -1856,13 +1817,15 @@ def text_private(bot, message):
                 keyboard = [[InlineKeyboardButton("<<", callback_data='back')]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 if (password_retry.count(chat_id) == 5):
-                    timer = int(time()) - password_retry_time[password_retry.index(user)]
+                    timer = int(time()) - password_retry_time[password_retry.index(chat_id)]
                     if (timer <= 1801):
                         keyboard = [[InlineKeyboardButton("<<", callback_data='back')]]
                         reply_markup = InlineKeyboardMarkup(keyboard)
-                        text = f"شما بدلیل اسپم تا  {str((1800 + password_retry_time[password_retry.index(user)]) - int(time()))} ثانیه نمیتونین اطلاعات اکانتی رو ببینین"
+                        text = f"شما بدلیل اسپم تا  {str((1800 + password_retry_time[password_retry.index(chat_id)]) - int(time()))} ثانیه نمیتونین اطلاعات اکانتی رو ببینین"
                         message.reply_text(text, reply_markup=reply_markup)
                         return
+                    else:
+                        password_retry_del(chat_id)
                 if st is True:
                     port, username, password, panel, route_path, sshport, udgpw, remark = sshx.HOST_INFO(host)
                     settings = get_settings()
@@ -2938,12 +2901,12 @@ def text_private(bot, message):
             link = fixed_link_json(link)
             password = link
             status, text = payment.check_valid_perfect_money(account_id, password)
+            keyboard = [[InlineKeyboardButton("<<", callback_data='perfectmoney')]]
             if status is True:
                 settings = get_settings()
                 settings['perfect_money_account_id'] = account_id
                 settings['perfect_money_account_password'] = password
                 update_settings(settings)
-                keyboard = [[InlineKeyboardButton("<<", callback_data='perfectmoney')]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 message.reply_text(f"✔️ انجام شد\n\n{text}", reply_markup=reply_markup)
             else:
@@ -3037,7 +3000,7 @@ def text_private(bot, message):
                 message.reply_text("فقط میتونی عدد بفرستی")
 
         elif "Kill_" in status:
-            msg = message.reply_text("Wait...", reply_markup=reply_markup).id
+            msg = message.reply_text("Wait...").id
             keyboard = [[InlineKeyboardButton("<<", callback_data='Manager')]]
             reply_markup = InlineKeyboardMarkup(keyboard)
             try:
@@ -4034,6 +3997,10 @@ def text_private(bot, message):
                     cache_list.append("sshport")
                     cache_list.append("udgpw")
                     add_cache(chat_id, "AllEditremark")
+                elif cache_list[1] == "dragon":
+                    message.reply_text("پورت udgpw رو بفرستین (اصولا 7300 یا 7301 بصورت پیش فرض هر سرور حتما فعال کنین)")
+                    cache_list.append(link)
+                    add_cache(chat_id, "AllEditudgpw")
                 elif cache_list[1] == "xpanel":
                     message.reply_text("پورت ssh سرور رو بفرستین (فقط برای فرستادن اطلاعات اکانت به کاربر استفاده میشه)")
                     add_cache(chat_id, "AllEditsshport")
@@ -4131,7 +4098,7 @@ def text_private(bot, message):
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 hosts, remarks = sshx.HOSTS()
                 if host in hosts:
-                    sm = sshx.Change_udp_port('xpanel', host, link)
+                    sm = sshx.Change_udp_port(host, link)
                     message.reply_text(sm, reply_markup=reply_markup)
                 else:
                     message.reply_text(f"سروری با این آدرس وجود نداره:\n\n{host}", reply_markup=reply_markup)
@@ -4146,7 +4113,7 @@ def text_private(bot, message):
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 hosts, remarks = sshx.HOSTS()
                 if host in hosts:
-                    sm = sshx.Change_ssh_port('xpanel', host, link)
+                    sm = sshx.Change_ssh_port(host, link)
                     message.reply_text(sm, reply_markup=reply_markup)
                 else:
                     message.reply_text(f"سروری با این آدرس وجود نداره:\n\n{host}", reply_markup=reply_markup)
@@ -4206,6 +4173,10 @@ def text_private(bot, message):
                     cache_list.append("sshport")
                     cache_list.append("udgpw")
                     add_cache(chat_id, "serverremark")
+                elif cache_list[0] == "dragon":
+                    message.reply_text("پورت udgpw رو بفرستین (اصولا 7300 یا 7301 بصورت پیش فرض هر سرور حتما فعال کنین)")
+                    cache_list.append(link)
+                    add_cache(chat_id, "serverudgpw")
                 elif cache_list[0] == "xpanel":
                     message.reply_text("پورت ssh سرور رو بفرستین (فقط برای فرستادن اطلاعات اکانت به کاربر استفاده میشه)")
                     add_cache(chat_id, "serversshport")
@@ -4862,8 +4833,8 @@ def call_stats(bot, query):
             except Exception as e:
                 offline_servers += 1
                 logs += f"⭕️ Connection Error: {host} | {str(e)}"
-            if (checked_servers % 5 == 0):
-                query.edit_message_text(text=f"Collected data from {str(checked_servers)} servers...")
+            #if (checked_servers % 5 == 0):
+                #query.edit_message_text(text=f"Collected data from {str(checked_servers)} servers...")
         if len(str(int(servers_traffic))) >= 3:
             total_usage_vps = f"{str('{:.2f}'.format(float(servers_traffic) / 1024))} TB"
         else:
@@ -4905,9 +4876,11 @@ def call_filtering(bot, query):
             Session = sshx.PANNEL(host, username, password, port, panel, 'Other', 'uname')
             status, server_msg = Session.IP_Check()
             if status is True:
-                if check_host_api(host) is True:
+                if sshx.check_host_api(host) is True:
                     blocked_servers += 1
                     FS += (f"🔴Offline: {host}\n")
+                else:
+                    online_servers += 1
             else:
                 if "Error" in server_msg:
                     checked_servers -= 1
@@ -4918,8 +4891,8 @@ def call_filtering(bot, query):
             checked_servers += 1
         except Exception as e:
             logs += f"⭕️ Connection Error: {host}"
-        if (checked_servers % 5 == 0):
-            query.edit_message_text(text=f"Collected data from {str(checked_servers)} servers...")
+        #if (checked_servers % 5 == 0):
+            #query.edit_message_text(text=f"Collected data from {str(checked_servers)} servers...")
     text = f"{FS}\n🖥 Servers: {str(count_servers)}\n☑️Check servers: {str(checked_servers)}\n⚠️Blocked servers: {str(blocked_servers)}\n🟢Online servers: {online_servers}\n{logs}\n⏳Time: {str(int(time() - start))}s"
     query.edit_message_text(text=text, reply_markup=reply_markup)
 
@@ -4956,8 +4929,8 @@ def call_full(bot, query):
             checked_servers += 1
         except Exception as e:
             logs += f"⭕️ Connection Error: {host}"
-        if (checked_servers % 5 == 0):
-            query.edit_message_text(text=f"Collected data from {str(checked_servers)} servers...")
+        #if (checked_servers % 5 == 0):
+            #query.edit_message_text(text=f"Collected data from {str(checked_servers)} servers...")
     text = f"{FS}\n🖥 Servers: {str(count_servers)}\n☑️Check servers: {str(checked_servers)}\n⚠️Full servers: {str(full_servers)}\n👤Clients: {count_clients}\n⚪️Remain Clients: {str(remain_clients)}\n{logs}\n⏳Time: {str(int(time() - start))}s"
     query.edit_message_text(text=text, reply_markup=reply_markup)
 
@@ -8273,11 +8246,14 @@ def call_TTRS(bot, query):
         try:
             query.edit_message_text(text='Login test Wait...')
             port, username, password, panel, route_path, sshport, udgpw, remark = sshx.HOST_INFO(host)
-            url, r = sshx.open_session(host, port)
-            if sshx.Test(r, host, port, panel, 'updater') is True:
-                status = "🟢 Online"
+            if panel in ['dragon']:
+                status = sshx.ssh_status(host, port, username, password)
             else:
-                status = "🔴 Offline: Please check the username or password or port"
+                url, r = sshx.open_session(host, port)
+                if sshx.Test(r, host, port, panel, 'updater') is True:
+                    status = "🟢 Online"
+                else:
+                    status = "🔴 Offline: Please check the username or password or port"
             chat_id = query.message.chat.id
             keyboard = [
                 [InlineKeyboardButton("🌐 Edit Domain", callback_data=f"EDD_{host}")],
@@ -8306,11 +8282,11 @@ def call_EAl(bot, query):
     if host in hosts:
         keyboard = [
             [InlineKeyboardButton("Shahan", callback_data=f'ELIP_shahan:{host}'), InlineKeyboardButton("XPanel", callback_data=f'ELIP_xpanel:{host}')],
-            [InlineKeyboardButton("Rocket", callback_data=f'ELIP_rocket:{host}')],
+            [InlineKeyboardButton("Rocket", callback_data=f'ELIP_rocket:{host}'), InlineKeyboardButton("Dragon", callback_data=f'ELIP_dragon:{host}')],
             [InlineKeyboardButton("<<", callback_data=f'TTRS_{host}')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        text = "یکی از پنل های زیر انتخاب کنین :\n"
+        text = "یکی از پنل های زیر انتخاب کنین :\n\n"
         query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
     else:
         query.edit_message_text(text="این سرور وجود نداره! احتمالا قبلا از لیست حذف کردین", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back", callback_data="SMT")]]))
@@ -8387,12 +8363,12 @@ def call_AST(bot, query):
         return
     keyboard = [
         [InlineKeyboardButton("Shahan", callback_data='CHSA_shahan'), InlineKeyboardButton("XPanel", callback_data='CHSA_xpanel')],
-        [InlineKeyboardButton("Rocket", callback_data='CHSA_rocket')],
+        [InlineKeyboardButton("Rocket", callback_data='CHSA_rocket'), InlineKeyboardButton("Dragon", callback_data='CHSA_dragon')],
         [InlineKeyboardButton("<<", callback_data='SMT')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    t_persian = "یکی از پنل های زیر انتخاب کنین :\n"
-    t_english = '<a href="https://github.com/HamedAp/Ssh-User-management">Shahan</a>\n<a href="https://github.com/xpanel-cp/XPanel-SSH-User-Management">XPanel</a>\n<a href="https://github.com/mahmoud-ap/rocket-ssh">Rocket</a>'
+    t_persian = "یکی از پنل های زیر انتخاب کنین :\n\n"
+    t_english = '<a href="https://github.com/HamedAp/Ssh-User-management">Shahan</a>\n<a href="https://github.com/xpanel-cp/XPanel-SSH-User-Management">XPanel</a>\n<a href="https://github.com/mahmoud-ap/rocket-ssh">Rocket</a>\n<a href="https://github.com/januda-ui/DRAGON-VPS-MANAGER">Dragon</a>'
     query.edit_message_text(text=(t_persian + t_english), reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML, disable_web_page_preview=True)
 
 
@@ -8469,11 +8445,11 @@ def call_UEPOT(bot, query):
     hosts, remarks = sshx.HOSTS()
     if host in hosts:
         port, username, password, panel, route_path, sshport, udgpw, remark = sshx.HOST_INFO(host)
-        if panel == 'xpanel':
+        if panel in ['xpanel', 'dragon']:
             add_cache(chat_id, "EUDPport_" + host)
             query.edit_message_text(text='پورت udp بفرستین:', reply_markup=reply_markup)
         else:
-            query.answer("این گزینه فقط برای ایکس پنل هست", show_alert=True)
+            query.answer("این گزینه فقط برای ایکس پنل و دراگون هست", show_alert=True)
     else:
         query.edit_message_text(text="این سرور وجود نداره! احتمالا قبلا از لیست حذف کردین", reply_markup=reply_markup)
 
@@ -8634,35 +8610,36 @@ def call_VDNKHF(bot, query):
         hosts, remarks = sshx.HOSTS()
         for host in hosts:
             port, username, password, panel, route_path, sshport, udgpw, remark = sshx.HOST_INFO(host)
-            do = True
-            session = 'ssh/' + host + ".session"
-            if Path(session).is_file() is False:
-                if sshx.Login(username, password, host, port, panel) is False:
-                    do = False
-            elif os.stat(session).st_size == 0:
-                os.remove(session)
-                if sshx.Login(username, password, host, port, panel) is False:
-                    do = False
-            if (Path("protocol-cache.txt").is_file() is False) or (sshx.get_protocol_cache(host) is None):
-                protocol = sshx.check_panel_protocol(host)
-                sshx.add_protocol_cache(host, protocol)
-            if do is True:
-                try:
-                    protocol_cache = sshx.get_protocol_cache(host)
-                    protocol_check = sshx.check_panel_protocol(host)
-                    if protocol_check != protocol_cache:
-                        sshx.remove_protocol_cache(host)
-                        sshx.add_protocol_cache(host, protocol_check)
-                    url, r = sshx.open_session(host, port)
-                    if sshx.Test(r, host, port, panel, 'updater') is False:
-                        sshx.Login(username, password, host, port, panel)
-                        logs += f"🟢Login: {host} {panel}\n"
-                    else:
-                        logs += f"⚪️Good: {host} {panel}\n"
-                except Exception as e:
-                    logs += f"🔴Session Error: {host} {panel}\n"
-            else:
-                logs += f"🔴Login Error: {host} {panel}\n"
+            if panel not in ['dragon']:
+                do = True
+                session = 'ssh/' + host + ".session"
+                if Path(session).is_file() is False:
+                    if sshx.Login(username, password, host, port, panel) is False:
+                        do = False
+                elif os.stat(session).st_size == 0:
+                    os.remove(session)
+                    if sshx.Login(username, password, host, port, panel) is False:
+                        do = False
+                if (Path("protocol-cache.txt").is_file() is False) or (sshx.get_protocol_cache(host) is None):
+                    protocol = sshx.check_panel_protocol(host)
+                    sshx.add_protocol_cache(host, protocol)
+                if do is True:
+                    try:
+                        protocol_cache = sshx.get_protocol_cache(host)
+                        protocol_check = sshx.check_panel_protocol(host)
+                        if protocol_check != protocol_cache:
+                            sshx.remove_protocol_cache(host)
+                            sshx.add_protocol_cache(host, protocol_check)
+                        url, r = sshx.open_session(host, port)
+                        if sshx.Test(r, host, port, panel, 'updater') is False:
+                            sshx.Login(username, password, host, port, panel)
+                            logs += f"🟢Login: {host} {panel}\n"
+                        else:
+                            logs += f"⚪️Good: {host} {panel}\n"
+                    except Exception as e:
+                        logs += f"🔴Session Error: {host} {panel}\n"
+                else:
+                    logs += f"🔴Login Error: {host} {panel}\n"
         keyboard = [[InlineKeyboardButton("<<", callback_data='SMT')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         bot.send_message(chat_id, logs, reply_markup=reply_markup)
@@ -9277,6 +9254,7 @@ def call_test(bot, query):
                 else:
                     bot.send_message(chat_id, f"Error: {text}")
             except Exception as e:
+                print(e)
                 keyboard = [[InlineKeyboardButton("<<", callback_data='back')]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 bot.send_message(chat_id, "خطایی پیش اومد بعدا امتحان کنین😑", reply_markup=reply_markup)
@@ -9566,6 +9544,16 @@ def call_bkon(bot, query):
                         if ((int(time()) - start_time) < ((get_settings()['backup'] * 60) * 60)) and (first is False):
                             sleep(3)
                         else:
+                            files = ["All.txt", "ssh.db", "data.json", "Pannels.txt", "logs.txt", "nohup.out"]
+                            media = []
+                            for file in files:
+                                if Path(file).is_file() is True:
+                                    if os.stat(file).st_size != 0:
+                                        media.append(InputMediaDocument(file))
+                            try:
+                                bot.send_media_group(chat_id, media)
+                            except:
+                                pass
                             count_all, count_errors, count_goods = (0,)*3
                             hosts, remarks = sshx.HOSTS()
                             for host in hosts:
@@ -9581,7 +9569,10 @@ def call_bkon(bot, query):
                                         Session = sshx.PANNEL(host, username, password, port, panel, 'Other', 'uname')
                                         status, content = Session.Backup_content()
                                         if status is True:
-                                            f = folder + "/" + host + ".sql"
+                                            if panel in ['dragon']:
+                                                f = folder + "/" + host + ".vps"
+                                            else:
+                                                f = folder + "/" + host + ".sql"
                                             if Path(f).is_file() is True:
                                                 os.remove(f)
                                             with open(f, 'wb') as file:
@@ -10349,7 +10340,7 @@ def call_FLCHON(bot, query):
                                             for i in range(2):
                                                 status, content = Session.IP_Check()
                                                 if (status is True) and (i == 1):
-                                                    if check_host_api(host) is True:
+                                                    if sshx.check_host_api(host) is True:
                                                         text = "🔴Blocked in IRAN: " + host
                                                         checked_filtering.append(host)
                                                         for admin in admin_id:
@@ -11003,7 +10994,7 @@ def call_CTM(bot, query):
         cb = 'on'
     keyboard = [
         [InlineKeyboardButton(f"Button: {settings['tutorial_mac']} {emoji}", callback_data=f'CTM_{cb}')],
-        [InlineKeyboardButton("Edit✏️", callback_data='ETA')]
+        [InlineKeyboardButton("Edit✏️", callback_data='ETM')]
     ]
     text = '<b>Mac🍎</b>\n\n' + "Current: \n\n" + str(settings['mac']) + "\n\nStatus: " + settings['tutorial_mac'] + " " + emoji
     keyboard.append([InlineKeyboardButton("<<", callback_data='Tutorials')])
@@ -11048,7 +11039,7 @@ def call_CTW(bot, query):
         cb = 'on'
     keyboard = [
         [InlineKeyboardButton(f"Button: {settings['tutorial_windows']} {emoji}", callback_data=f'CTW_{cb}')],
-        [InlineKeyboardButton("Edit✏️", callback_data='ETA')]
+        [InlineKeyboardButton("Edit✏️", callback_data='ETW')]
     ]
     text = '<b>Windows💻</b>\n\n' + "Current: \n\n" + str(settings['windows']) + "\n\nStatus: " + settings['tutorial_windows'] + " " + emoji
     keyboard.append([InlineKeyboardButton("<<", callback_data='Tutorials')])
