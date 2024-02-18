@@ -47,3 +47,9 @@ install python and packages then Run run.py > session-updater.py
 
 ![Screenshot](https://i.ibb.co/8bttGtK/un-1.jpg)![Screenshot2](https://i.ibb.co/G7BdCWc/un-2.jpg)
 
+
+sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python3-pip
+
