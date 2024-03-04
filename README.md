@@ -49,8 +49,11 @@ install python and packages then Run run.py > session-updater.py
 
 
 sudo apt-get install software-properties-common
+
 sudo apt-add-repository universe
+
 sudo apt-get update
+
 sudo apt-get install python3-pip
 
 python3 -m venv .venv
