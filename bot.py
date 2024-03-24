@@ -100,7 +100,7 @@ def User_Tools_keys():
     ]
     settings = get_settings()
     if settings['buy'] == 'on':
-        keyboard.insert(0, [InlineKeyboardButton("🔄 تمدید", callback_data='upgrade'), InlineKeyboardButton("🛒 خرید", callback_data='buy')])
+        keyboard.insert(0, [InlineKeyboardButton("🔄 تمدید", callback_data='upgrade'), InlineKeyboardButton("🛒 دریافت", callback_data='buy')])
     if settings['list_status'] == "on":
         for i in range(len(keyboard)):
             if InlineKeyboardButton("💰کیف پول", callback_data='UWM') in keyboard[i]:
@@ -114,7 +114,7 @@ def User_Tools_keys():
     if settings['test'] == "on":
         keyboard.insert(1, [InlineKeyboardButton("🗒 تست", callback_data='test')])
     if settings['buy-traffic'] == 'on':
-        keyboard.insert(1, [InlineKeyboardButton("🔁 خرید ترافیک", callback_data='traffic')])
+        keyboard.insert(1, [InlineKeyboardButton("🔁 دریافت ترافیک", callback_data='traffic')])
     if settings['proxy'] != "None":
         keyboard.insert(-1, [InlineKeyboardButton("🆓 پروکسی تلگرام", callback_data='FREEPX')])
     inv = True
@@ -1738,7 +1738,7 @@ def text_private(bot, message):
                                 if (settings['buy'] == 'on') or (chat_id in seller_id):
                                     keyboard[0].insert(1, InlineKeyboardButton("🔄تمدید", callback_data=("UPG_" + cb)))
                                 if (settings['buy-traffic'] == 'on') or (chat_id in seller_id):
-                                    keyboard[1].insert(1, InlineKeyboardButton("🔁 خرید ترافیک", callback_data=("UTGB_" + cb)))
+                                    keyboard[1].insert(1, InlineKeyboardButton("🔁 دریافت ترافیک", callback_data=("UTGB_" + cb)))
                                 if (settings['delete_user'] == 'on') or (chat_id in seller_id):
                                     keyboard.append([InlineKeyboardButton("❌حذف اکانت ", callback_data=("DJVYS_" + cb))])
                                 if (settings['online_access'] == 'on') or (chat_id in seller_id):
@@ -1849,7 +1849,7 @@ def text_private(bot, message):
                                 if (settings['buy'] == 'on') or (chat_id in seller_id):
                                     keyboard[0].insert(1, InlineKeyboardButton("🔄تمدید", callback_data=("UPG_" + cb)))
                                 if (settings['buy-traffic'] == 'on') or (chat_id in seller_id):
-                                    keyboard[1].insert(1, InlineKeyboardButton("🔁 خرید ترافیک", callback_data=("UTGB_" + cb)))
+                                    keyboard[1].insert(1, InlineKeyboardButton("🔁 دریافت ترافیک", callback_data=("UTGB_" + cb)))
                                 if (settings['delete_user'] == 'on') or (chat_id in seller_id):
                                     keyboard.append([InlineKeyboardButton("❌حذف اکانت ", callback_data=("DJVYS_" + cb))])
                                 if (settings['online_access'] == 'on') or (chat_id in seller_id):
@@ -2017,7 +2017,7 @@ def text_private(bot, message):
                             keyboard.append([InlineKeyboardButton("⚪️ درگاه نکست پی", callback_data=cb_nx)])
                         keyboard.append([InlineKeyboardButton("<< back", callback_data='UWM')])
                         reply_markup = InlineKeyboardMarkup(keyboard)
-                        message.reply_text("روش پرداختو انتخاب کن:", reply_markup=reply_markup)
+                        message.reply_text("شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup)
                         update_collector(chat_id, cache_list, [])
                     else:
                         message.reply_text("مبلغ خیلی بالاست عدد کمتری بفرست")
@@ -2051,7 +2051,7 @@ def text_private(bot, message):
                     st, VOUCHER_NUM, VOUCHER_AMOUNT = payment.validate_perfect_money_voucher(account_id, passphrase, ev_number, ev_code)
                     if st is True:
                         keyboard = [
-                            [InlineKeyboardButton("🛒 خرید", callback_data='buy')],
+                            [InlineKeyboardButton("🛒 دریافت", callback_data='buy')],
                             [InlineKeyboardButton("⤴️ منو ", callback_data='back')]
                         ]
                         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -2076,7 +2076,7 @@ def text_private(bot, message):
                             reply_markup = InlineKeyboardMarkup(keyboard)
                             for admin in admin_id:
                                 try:
-                                    bot.send_message(admin, "⛔️ خطای اکانت پرفکت مانی برای خرید کاربر.پn\nلطفا اطلاعات لاگین و آیپی آدرس مسک داخل API وبسایت پرفکت مانی رو بررسی کنین!", reply_markup=reply_markup)
+                                    bot.send_message(admin, "⛔️ خطای اکانت پرفکت مانی برای دریافت کاربر.پn\nلطفا اطلاعات لاگین و آیپی آدرس مسک داخل API وبسایت پرفکت مانی رو بررسی کنین!", reply_markup=reply_markup)
                                 except:
                                     pass
                     delete_cache(chat_id)
@@ -2168,7 +2168,7 @@ def text_private(bot, message):
                         username = "@" + message.from_user.username
                     except:
                         username = 'Null'
-                    t1 = f"💲فروشنده💲\nخرید \nserver: {host}\nuser: {user}\ndays: {days}\nGB: {traffic}\nConnection: {connection_limit}"
+                    t1 = f"💲فروشنده💲\nدریافت \nserver: {host}\nuser: {user}\ndays: {days}\nGB: {traffic}\nConnection: {connection_limit}"
                     text = "id: <code>" + str(chat_id) + "</code>\nName: " + name + '\nUsername: ' + username + "\n\ninfo buy:\n" + t1
                     cb = "Confirmed_" + code
                     no = "NO❌_" + code
@@ -5776,7 +5776,7 @@ def call_perfectmoney(bot, query):
         balance = "\n\n" + text
     else:
         balance = ""
-    text = f"💳Perfect Money\n\nAccount ID: <code>{settings['perfect_money_account_id']}</code>\nPassword: {settings['perfect_money_account_password']}\n\nStatus: {status}\n\nخرید اتوماتیک با پرفکت مانی. حتما طبق دکمه آموزش پیش برید. (فقط توی کیف پول کاربر فعال میشه)\n\n{balance}"
+    text = f"💳Perfect Money\n\nAccount ID: <code>{settings['perfect_money_account_id']}</code>\nPassword: {settings['perfect_money_account_password']}\n\nStatus: {status}\n\nدریافت اتوماتیک با پرفکت مانی. حتما طبق دکمه آموزش پیش برید. (فقط توی کیف پول کاربر فعال میشه)\n\n{balance}"
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML, disable_web_page_preview=True)
 
 
@@ -6386,7 +6386,7 @@ def call_price(bot, query):
         return
     keyboard = [[InlineKeyboardButton("<<", callback_data='back')]]
     if settings['buy'] == 'on':
-        keyboard[0].insert(1, InlineKeyboardButton("🛒 خرید", callback_data='buy'))
+        keyboard[0].insert(1, InlineKeyboardButton("🛒 دریافت", callback_data='buy'))
     reply_markup = InlineKeyboardMarkup(keyboard)
     text = settings['list']
     query.edit_message_text(text=text, reply_markup=reply_markup)
@@ -6674,7 +6674,7 @@ def call_UTGB(bot, query):
             text = "مشکلی پیش اومده بعدا تلاش کنین یا به پشتیبانی اطلاع بدین"
         else:
             if "نامحدود" in text:
-                text += "\n\n⛔️ اکانت شما ترافیکش نامحدوده نمیتونید ترافیک اضافه بخرید"
+                text += "\n\n⛔️ اکانت شما ترافیکش نامحدوده نمیتونید ترافیک اضافه بدریافت"
             else:
                 text += "\n\nبرای افزایش ترافیک یکی از گزینه هارو انتخاب کنین🙂"
                 if chat_id in seller_id:
@@ -6728,9 +6728,9 @@ def call_TBP(bot, query):
         keyboard.append([InlineKeyboardButton("<<", callback_data='traffic')])
         reply_markup = InlineKeyboardMarkup(keyboard)
         try:
-            query.edit_message_text(text="روش پرداختو انتخاب کن:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+            query.edit_message_text(text="شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
         except:
-            query.edit_message_text(text="📃روش پرداختو انتخاب کن:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+            query.edit_message_text(text="📃شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
     else:
         query.answer("دوباره تلاش کنید", show_alert=True)
         delete_cache(chat_id)
@@ -6811,7 +6811,7 @@ def call_LTPB(bot, query):
                     for admin in admin_id:
                         try:
                             mention = f"<a href='tg://user?id={str(chat_id)}'>{name}</a>"
-                            bot.send_message(admin, f"↕️ اطلاعات ترافیک اکانت خریداری شده توسط {mention}\nHost: {host}\nUser: {user}\nID: {str(chat_id)}\nuser username: {USERNAME}\nPrice: {str(price)} Toman\nTraffic: {str(GB)} GB", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+                            bot.send_message(admin, f"↕️ اطلاعات ترافیک اکانت دریافتاری شده توسط {mention}\nHost: {host}\nUser: {user}\nID: {str(chat_id)}\nuser username: {USERNAME}\nPrice: {str(price)} Toman\nTraffic: {str(GB)} GB", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
                         except:
                             pass
             else:
@@ -7162,7 +7162,7 @@ def call_BL(bot, query):
                     else:
                         user = UNAME + str(randint(123, 350))
                 user = user.lower()
-                t0 = "🥰مرسی از خریدتون\n\n"
+                t0 = "🥰مرسی از دریافتتون\n\n"
                 if chat_id in seller_id:
                     creator = "SELLER"
                 else:
@@ -7198,7 +7198,7 @@ def call_BL(bot, query):
                         for admin in admin_id:
                             try:
                                 mention = f"<a href='tg://user?id={str(chat_id)}'>{name}</a>"
-                                bot.send_message(admin, f"📃 اطلاعات اکانت خریداری شده توسط {mention}\nHost: {host}\nUser: {user}\nID: {str(chat_id)}\nuser username: {USERNAME}\nPrice: {str(price)} Toman", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+                                bot.send_message(admin, f"📃 اطلاعات اکانت دریافتاری شده توسط {mention}\nHost: {host}\nUser: {user}\nID: {str(chat_id)}\nuser username: {USERNAME}\nPrice: {str(price)} Toman", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
                             except:
                                 pass
                 else:
@@ -7251,9 +7251,9 @@ def call_Uname(bot, query):
             keyboard.append([InlineKeyboardButton("<<", callback_data='buy')])
             reply_markup = InlineKeyboardMarkup(keyboard)
             try:
-                query.edit_message_text(text="روش پرداختو انتخاب کن:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+                query.edit_message_text(text="شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
             except:
-                query.edit_message_text(text="📃روش پرداختو انتخاب کن:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+                query.edit_message_text(text="📃شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
     else:
         query.answer("دوباره تلاش کنید", show_alert=True)
         delete_cache(chat_id)
@@ -7376,7 +7376,7 @@ def call_Confirmed(bot, query):
                     user = UNAME + str(randint(123, 350))
             user = user.lower()
             passw = get_password_by_settings()
-            t0 = "🥰مرسی از خریدتون\n\n"
+            t0 = "🥰مرسی از دریافتتون\n\n"
             if chat_id in seller_id:
                 creator = "SELLER"
             else:
@@ -7435,7 +7435,7 @@ def call_NO(bot, query):
             username = "Null"
         add_check_admin(query.message.chat.id, query.message.chat.first_name, username, code, "No", int(time()))
         chat_id, cache_list = get_code_buy_data(code)
-        bot.send_message(chat_id, "خریدتون تایید نشد☹️ اگه ما اشتباه میکنیم پیام بدین به پشتیبانی 🙂")
+        bot.send_message(chat_id, "دریافتتون تایید نشد☹️ اگه ما اشتباه میکنیم پیام بدین به پشتیبانی 🙂")
         delete_code_buy(code)
         query.answer("اطلاعات به کاربر ارسال شد", show_alert=True)
     else:
@@ -7559,9 +7559,9 @@ def call_BU(bot, query):
         keyboard.append([InlineKeyboardButton("<<", callback_data='upgrade')])
         reply_markup = InlineKeyboardMarkup(keyboard)
         try:
-            query.edit_message_text(text="روش پرداختو انتخاب کن:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+            query.edit_message_text(text="شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
         except:
-            query.edit_message_text(text="📃روش پرداختو انتخاب کن:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+            query.edit_message_text(text="📃شما برای دریافت اکانت میتونید از روش پرداخت رمز ارز ترون استفاده کنید. \nاما صبر کنید یه راه بهتر دارید ❤️ \n شما با دعوت کردن هر نفر به ربات کیف پولتون 25 هزار تون شارژ میشه😍  پس همین الان برو به منو اصلی رو گذینه دریافت هدیه🎁 کلیک کن و لینک دعوت خودتو بردار و به دوستات بفرست \n فقط کافیه 4 نفر دعوتتو قبول کنن اون وقت میتونی یه اشتراک یک ماهه، یک کاربره، نامحدود، با سرعت عالی، بدون قطعی و مهم تر از همه رایگان بگیری💰", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
     else:
         query.answer("دوباره تلاش کنید", show_alert=True)
         delete_cache(chat_id)
@@ -7620,7 +7620,7 @@ def call_UPKIF(bot, query):
                     for admin in admin_id:
                         try:
                             mention = f"<a href='tg://user?id={str(chat_id)}'>{name}</a>"
-                            bot.send_message(admin, f"🔄 اطلاعات تمدید اکانت خریداری شده توسط {mention}\nHost: {host}\nUser: {user}\nID: {str(chat_id)}\nuser username: {USERNAME}\nPrice: {str(price)} Toman", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+                            bot.send_message(admin, f"🔄 اطلاعات تمدید اکانت دریافتاری شده توسط {mention}\nHost: {host}\nUser: {user}\nID: {str(chat_id)}\nuser username: {USERNAME}\nPrice: {str(price)} Toman", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
                         except:
                             pass
             else:
@@ -7804,7 +7804,7 @@ def call_Confirmed_UPGRADE(bot, query):
         msg = bot.send_message(query.message.chat.id, "wait...").id
         try:
             port, username, password, panel, route_path, sshport, udgpw, remark = sshx.HOST_INFO(host)
-            text = f"🥰مرسی از خریدتون\n\n"
+            text = f"🥰مرسی از دریافتتون\n\n"
             Session = sshx.PANNEL(host, username, password, port, panel, 'User', user)
             settings = get_settings()
             if settings['upgrade_days'] == "on":
@@ -9124,7 +9124,7 @@ def call_ID(bot, query):
             if (settings['buy'] == 'on') or (chat_id in seller_id):
                 keyboard[0].insert(1, InlineKeyboardButton("🔄تمدید", callback_data=("UPG_" + cb)))
             if (settings['buy-traffic'] == 'on') or (chat_id in seller_id):
-                keyboard[1].insert(1, InlineKeyboardButton("🔁 خرید ترافیک", callback_data=("UTGB_" + cb)))
+                keyboard[1].insert(1, InlineKeyboardButton("🔁 دریافت ترافیک", callback_data=("UTGB_" + cb)))
             if (settings['delete_user'] == 'on') or (chat_id in seller_id):
                 keyboard.append([InlineKeyboardButton("❌حذف اکانت ", callback_data=("DJVYS_" + cb))])
             if (settings['online_access'] == 'on') or (chat_id in seller_id):
@@ -9436,9 +9436,9 @@ def call_voucher(bot, query):
             add_cache(chat_id, "voucher")
             query.edit_message_text(text="کد e-Voucher بصورت عدد بفرستین:", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
         else:
-            query.edit_message_text(text="افزایش موجودی و خرید غیرفعاله !", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+            query.edit_message_text(text="افزایش موجودی و دریافت غیرفعاله !", reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
     else:
-        query.answer("افزایش موجودی و خرید غیرفعاله", show_alert=True)
+        query.answer("افزایش موجودی و دریافت غیرفعاله", show_alert=True)
 
 
 @app.on_callback_query(filters.regex('UWPM'))
@@ -9463,7 +9463,7 @@ def call_UWPM(bot, query):
         reply_markup = InlineKeyboardMarkup(keyboard)
         query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
     else:
-        query.answer("افزایش موجودی و خرید غیرفعاله", show_alert=True)
+        query.answer("افزایش موجودی و دریافت غیرفعاله", show_alert=True)
 
 
 @app.on_callback_query(filters.regex('UGift'))
@@ -9918,7 +9918,7 @@ def call_ZQUC(bot, query):
     keyboard = [
         [InlineKeyboardButton(f"{cb} {emoji_cb}", callback_data=f'JDXSF_{cb}')],
     ]
-    text = '<b>Upgrade Settings</b>\n\n' + "وقتی که کاربر یه اکانتی داره و سه روز دیگه مونده اکانتش تموم بشه و تمدید کنه, و مثلا سی روزه تمدید کنه و این گزینه هم روشن باشه , تعداد روز باقی مونده + روز خریداری شده تمدید میشه یعنی: 33 روزه میشه\n\nاین گزینه خاموش باشه همون 30 روز تمدید میشه\n\nنکته این گزینه فقط برای فروشنده ها و کاربرا هست و اگه ادمین تمدید کنه تعداد همون روزی که داده شده ثبت میشه." + "\n\nCurrent: " + settings['upgrade_days'] + " " + emoji
+    text = '<b>Upgrade Settings</b>\n\n' + "وقتی که کاربر یه اکانتی داره و سه روز دیگه مونده اکانتش تموم بشه و تمدید کنه, و مثلا سی روزه تمدید کنه و این گزینه هم روشن باشه , تعداد روز باقی مونده + روز دریافتاری شده تمدید میشه یعنی: 33 روزه میشه\n\nاین گزینه خاموش باشه همون 30 روز تمدید میشه\n\nنکته این گزینه فقط برای فروشنده ها و کاربرا هست و اگه ادمین تمدید کنه تعداد همون روزی که داده شده ثبت میشه." + "\n\nCurrent: " + settings['upgrade_days'] + " " + emoji
     keyboard.append([InlineKeyboardButton("<<", callback_data='ZBSHP')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -9951,7 +9951,7 @@ def call_PODSC(bot, query):
         [InlineKeyboardButton("Edit✏️", callback_data='EPCSD')],
     ]
     settings = get_settings()
-    text = '<b>Buy MSG Settings</b>\n\n' + "میتونین پیام تنظیم کنین که بعد از خرید کاربر بهشون چیزیو ک میخواید بگین" + "\n\nText:\n\n" + settings['after_buy']
+    text = '<b>Buy MSG Settings</b>\n\n' + "میتونین پیام تنظیم کنین که بعد از دریافت کاربر بهشون چیزیو ک میخواید بگین" + "\n\nText:\n\n" + settings['after_buy']
     keyboard.append([InlineKeyboardButton("<<", callback_data='ZBSHP')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -9992,14 +9992,14 @@ def call_ZBSHP(bot, query):
         [InlineKeyboardButton("🔴 پرفکت مانی", callback_data='perfectmoney')],
         [InlineKeyboardButton("🛒قیمت ترافیک", callback_data='ADTPR'), InlineKeyboardButton("🛒قیمت ها", callback_data='ADMINPRICES')],
         [InlineKeyboardButton("🌀تنظیم قیمت رندوم ", callback_data='CSNDF')],
-        [InlineKeyboardButton("🚦 وضعیت خرید ترافیک", callback_data='BTOPtion'), InlineKeyboardButton("🔐وضعیت خرید اکانت", callback_data='BSOPtion')],
+        [InlineKeyboardButton("🚦 وضعیت دریافت ترافیک", callback_data='BTOPtion'), InlineKeyboardButton("🔐وضعیت دریافت اکانت", callback_data='BSOPtion')],
         [InlineKeyboardButton("🔄تنظیم تمدید کاربر ", callback_data='ZQUC')],
-        [InlineKeyboardButton("📃 پیام بعد از خرید اکانت کاربر ", callback_data='PODSC')],
+        [InlineKeyboardButton("📃 پیام بعد از دریافت اکانت کاربر ", callback_data='PODSC')],
         [InlineKeyboardButton(f"ساخت از اولین اتصال  {cb} {emoji_cb}", callback_data=f'VKDLS_{cb}')],
         [InlineKeyboardButton("🔑تنظیم پسورد", callback_data='DKSJJHJ')]
     ]
     t0 = "\n\nCurrent: " + settings['first_connect'] + " " + emoji
-    text = '<b>Shop Settings</b>\n\n' + "تنظیمات خرید و تمدید اکانت و ترافیک\n\nاگه گزینه روشن باشه 🟢 on کاربر یا فروشنده وقتی اکانتی رو میخره از اولین اتصال روز اکانت درست میشه و اگه خاموش باشه از همون لحظه شروع میشه " + t0
+    text = '<b>Shop Settings</b>\n\n' + "تنظیمات دریافت و تمدید اکانت و ترافیک\n\nاگه گزینه روشن باشه 🟢 on کاربر یا فروشنده وقتی اکانتی رو میخره از اولین اتصال روز اکانت درست میشه و اگه خاموش باشه از همون لحظه شروع میشه " + t0
     keyboard.append([InlineKeyboardButton("<<", callback_data='settings')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -10030,7 +10030,7 @@ def call_CSNDF(bot, query):
         [InlineKeyboardButton("🔄 تغییر قیمت رندوم", callback_data='JLDKH')],
     ]
     t0 = "\n\nStatus: " + settings['random_price'] + " " + emoji + "\nMin: " + str(settings['random_price_min']) + "\nMax: " + str(settings['random_price_max'])
-    text = '<b>Random Price Settings</b>\n\n' + "وقتی این گزینه فعال باشه به جای اینکه قیمت اصلی قیمت رندوم داده میشه مثلا قیمت اصلی که تعیین شده باشه 5000 تومن و مین 100 باشه و مکس 1000 بین این اعداد مثلا عدد 500 بصوورت رندوم انتخاب میشه و توی لیست قیمت همه 500 تومن کاهش پیدا میکنن (حق با مشتریه) و میشه 4500 تومن (این قیمت فقط تو لیست قیمت تمدید و خرید و فقط برای کاربراست و هیچ ربطی به فروشنده ها نداره)" + t0
+    text = '<b>Random Price Settings</b>\n\n' + "وقتی این گزینه فعال باشه به جای اینکه قیمت اصلی قیمت رندوم داده میشه مثلا قیمت اصلی که تعیین شده باشه 5000 تومن و مین 100 باشه و مکس 1000 بین این اعداد مثلا عدد 500 بصوورت رندوم انتخاب میشه و توی لیست قیمت همه 500 تومن کاهش پیدا میکنن (حق با مشتریه) و میشه 4500 تومن (این قیمت فقط تو لیست قیمت تمدید و دریافت و فقط برای کاربراست و هیچ ربطی به فروشنده ها نداره)" + t0
     keyboard.append([InlineKeyboardButton("<<", callback_data='ZBSHP')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -10167,10 +10167,10 @@ def call_BSOPtion(bot, query):
         cb_2 = 'on'
         emoji_cb_2 = "🟢"
     keyboard = [
-        [InlineKeyboardButton(f"وضعیت خرید {cb} {emoji_cb}", callback_data=f'EBS_{cb}')],
+        [InlineKeyboardButton(f"وضعیت دریافت {cb} {emoji_cb}", callback_data=f'EBS_{cb}')],
         [InlineKeyboardButton(f"فقط مشتری {cb_2} {emoji_cb_2}", callback_data=f'EKJV_{cb_2}')]
     ]
-    text = '<b>Shop Status Settings</b>\n\n' + "میتونین با خاموش و روشن کردن این گزینه خرید یا تمدید غیرفعال یا فعال کنین (برای همه)\n\nیا اینکه این گزینه فقط برای مشتری ها روشن باشه " + "\n\nCurrent: " + settings['buy'] + " " + emoji + "\nCustomers only: " + settings['buy_only_customers'] + " " + emoji_2
+    text = '<b>Shop Status Settings</b>\n\n' + "میتونین با خاموش و روشن کردن این گزینه دریافت یا تمدید غیرفعال یا فعال کنین (برای همه)\n\nیا اینکه این گزینه فقط برای مشتری ها روشن باشه " + "\n\nCurrent: " + settings['buy'] + " " + emoji + "\nCustomers only: " + settings['buy_only_customers'] + " " + emoji_2
     keyboard.append([InlineKeyboardButton("<<", callback_data='ZBSHP')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -11164,7 +11164,7 @@ def call_BTOPtion(bot, query):
     keyboard = [
         [InlineKeyboardButton(f"{cb} {emoji_cb}", callback_data=f'EBT_{cb}')],
     ]
-    text = '<b>Traffic shop Settings</b>\n\n' + "میتونین با خاموش و روشن کردن این گزینه خرید ترافیک غیرفعال یا فعال کنین" + "\n\nCurrent: " + settings['buy-traffic'] + " " + emoji
+    text = '<b>Traffic shop Settings</b>\n\n' + "میتونین با خاموش و روشن کردن این گزینه دریافت ترافیک غیرفعال یا فعال کنین" + "\n\nCurrent: " + settings['buy-traffic'] + " " + emoji
     keyboard.append([InlineKeyboardButton("<<", callback_data='ZBSHP')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -11353,11 +11353,11 @@ def call_XSM(bot, query):
     keyboard = [
         [InlineKeyboardButton(f"Custom: {cb} {emoji_cb}", callback_data=f'ESM_{cb}')],
         [InlineKeyboardButton(f"Server selection: {cb_2} {emoji_cb_2}", callback_data=f'OSKSC_{cb_2}')],
-        [InlineKeyboardButton("لیست قیمت خرید و تمدید اکانت", callback_data='SPBAL')],
-        [InlineKeyboardButton("لیست خرید ترافیک", callback_data='SPBTL')],
+        [InlineKeyboardButton("لیست قیمت دریافت و تمدید اکانت", callback_data='SPBAL')],
+        [InlineKeyboardButton("لیست دریافت ترافیک", callback_data='SPBTL')],
     ]
     t0 = "\n\nCurrent: " + settings['seller_custom'] + " " + emoji + "\n\nServer selection: " + settings['select_server_sellers'] + " " + emoji_2
-    text = '<b>Sellers Settings</b>\n\n' + "با روشن کردن دکمه اولی فروشنده میتونه آزادانه اکانت مورد نظرشو بسازه و نیاز به تایید شما هست.\nبا خاموش بودن این دکمه کاربر باید از لیستی که شما تعیین کردین خرید انجام بده و اتوماتیک از کیف پولش برداشت میشه و نیازی به تایید شما نیست\n\nبا روشن بودن دکمه دوم فروشنده میتونه سرور به دلخواه انتخاب کنه و با خاموش بودن بصورت رندوم سرور انتخاب میشه." + t0
+    text = '<b>Sellers Settings</b>\n\n' + "با روشن کردن دکمه اولی فروشنده میتونه آزادانه اکانت مورد نظرشو بسازه و نیاز به تایید شما هست.\nبا خاموش بودن این دکمه کاربر باید از لیستی که شما تعیین کردین دریافت انجام بده و اتوماتیک از کیف پولش برداشت میشه و نیازی به تایید شما نیست\n\nبا روشن بودن دکمه دوم فروشنده میتونه سرور به دلخواه انتخاب کنه و با خاموش بودن بصورت رندوم سرور انتخاب میشه." + t0
     keyboard.append([InlineKeyboardButton("<<", callback_data='settings')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -11597,7 +11597,7 @@ def call_NSCLS(bot, query):
         [InlineKeyboardButton("🗒پیام قبل استارت", callback_data='QPAEOI')]
     ]
     t0 = "\n\nCurrent: \nNotify New user: " + settings['notification'] + " " + emoji + "\nNotify phone number: " + settings['phone_notification'] + " " + emoji_2 + "\nBuy Notify: " + settings['buy_notification'] + " " + emoji_3
-    text = '<b>Notification Settings</b>\n\n' + 'بهتون اطلاع میده کی عضو ربات شده \n\nگزینه دوم وقتی کاربر شمارشو میده به شما اطلاع بده\n\nگزینه سوم وقتی کاربر یا فروشنده از طریق کیف پول خریدی انجام دادن به شما اطلاع رسانی بشه فرقی نداره که خرید یا تمدید باشه\n\nگزینه چهارم میتونین برای کاربر یه پیامی رو تنظیم کنین که بعد از استارت نمایش داده بشه و فقط یکبار نشون داده میشه' + t0
+    text = '<b>Notification Settings</b>\n\n' + 'بهتون اطلاع میده کی عضو ربات شده \n\nگزینه دوم وقتی کاربر شمارشو میده به شما اطلاع بده\n\nگزینه سوم وقتی کاربر یا فروشنده از طریق کیف پول دریافتی انجام دادن به شما اطلاع رسانی بشه فرقی نداره که دریافت یا تمدید باشه\n\nگزینه چهارم میتونین برای کاربر یه پیامی رو تنظیم کنین که بعد از استارت نمایش داده بشه و فقط یکبار نشون داده میشه' + t0
     keyboard.append([InlineKeyboardButton("<<", callback_data='settings')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -11774,7 +11774,7 @@ def call_RWUAD(bot, query):
         [InlineKeyboardButton(f"Change Password: {cb_7} {emoji_cb_7}", callback_data=f'KJGNSD_{cb_7}')]
     ]
     t0 = "\n\nCurrent: \nDelete by user: " + settings['delete_user'] + " " + emoji + "\nServer selection: " + settings['select_server_users'] + " " + emoji_2 + "\nDropbear Port: " + settings['dropbear'] + " " + emoji_3 + "\nAccount info button: " + settings['info_service'] + " " + emoji_4 + "\nTuic 5: " + settings['tuic'] + " " + emoji_5 + "\nOnline access: " + settings['online_access'] + " " + emoji_6 + "\nChange Password: " + settings['change_password'] + " " + emoji_7
-    text = '<b>Users Access Settings</b>\n\n' + "با گزینه اول میتونین دسترسی کاربر برای دلیت اکانت محدود کنین که خاموش باشه دکمه حذف اکانت برای کاربر نمایش داده نمیشه و نمیتونه حذف کنه اکانت خودشو و اگه روشن باشه میتونه اینکارو انجام بده\n\nگزینه دوم اگه روشن باشه کاربر میتونه سرور دلبخواه رو انتخاب کنه و اگه خاموش باشه بصورت رندوم بهش داده میشه (هیچ آدرسی فرستاده نمیشه قبل خرید)\n\nگزینه سوم برای پورت دراپ بیر هست که اگه روشن باشه پورت دراپ بیر برای کاربر میفرسته\n\nگزینه چهارم برای دکمه اطلاعات سرویس هست که نمایش داده بشه یا نه\n\nگزینه پنجم توییک هستش که فرستاده بشه یا نه (اگه روشن باشه هم برای کاربر هم برای ادمین و فروشنده ارسال میشه)\n\nگزینه شیشم کاربرا میتونن آنلاینی های اکانتشون ببینن\n\nگزینه هفتم مجوز تغییر پسورد توسط کاربر " + t0
+    text = '<b>Users Access Settings</b>\n\n' + "با گزینه اول میتونین دسترسی کاربر برای دلیت اکانت محدود کنین که خاموش باشه دکمه حذف اکانت برای کاربر نمایش داده نمیشه و نمیتونه حذف کنه اکانت خودشو و اگه روشن باشه میتونه اینکارو انجام بده\n\nگزینه دوم اگه روشن باشه کاربر میتونه سرور دلبخواه رو انتخاب کنه و اگه خاموش باشه بصورت رندوم بهش داده میشه (هیچ آدرسی فرستاده نمیشه قبل دریافت)\n\nگزینه سوم برای پورت دراپ بیر هست که اگه روشن باشه پورت دراپ بیر برای کاربر میفرسته\n\nگزینه چهارم برای دکمه اطلاعات سرویس هست که نمایش داده بشه یا نه\n\nگزینه پنجم توییک هستش که فرستاده بشه یا نه (اگه روشن باشه هم برای کاربر هم برای ادمین و فروشنده ارسال میشه)\n\nگزینه شیشم کاربرا میتونن آنلاینی های اکانتشون ببینن\n\nگزینه هفتم مجوز تغییر پسورد توسط کاربر " + t0
     keyboard.append([InlineKeyboardButton("<<", callback_data='settings')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
@@ -11912,7 +11912,7 @@ def call_settings(bot, query):
         query.answer("Access denied", show_alert=True)
         return
     keyboard = [
-        [InlineKeyboardButton("🛒تنظیمات خرید ", callback_data='ZBSHP'), InlineKeyboardButton("تنظیم دسترسی 🔐", callback_data='RWUAD')],
+        [InlineKeyboardButton("🛒تنظیمات دریافت ", callback_data='ZBSHP'), InlineKeyboardButton("تنظیم دسترسی 🔐", callback_data='RWUAD')],
         [InlineKeyboardButton("💲 تنظیمات فروشنده ها", callback_data='XSM'), InlineKeyboardButton("🔔اطلاع رسانی ", callback_data='NSCLS')],
         [InlineKeyboardButton("📃پیام استارت", callback_data='WSMSG'), InlineKeyboardButton("🏷 پیام تعرفه قیمت", callback_data='WLMSG')],
         [InlineKeyboardButton("❔ بخش آموزش کاربر", callback_data='Tutorials'), InlineKeyboardButton("📩 تنظیم پشتیبانی", callback_data='SID')],
@@ -12206,7 +12206,7 @@ def image_users(bot, message):
             delete_all_buy(chat_id, "add")
             add_code_buy(chat_id, code, "add", cache_list)
             t1 = f"server: {cache_list[6]}\nuser: {cache_list[5]}\ndays: {cache_list[0]}\nGB: {cache_list[1]}\nConnection: {cache_list[2]}\nPrice: {cache_list[3]} Toman\nPayment: {cache_list[7]}"
-            text = "id: <code>" + str(chat_id) + "</code>\nName: " + name + '\nUsername: ' + username + "\n\nاطلاعات خرید اکانت\n" + t1
+            text = "id: <code>" + str(chat_id) + "</code>\nName: " + name + '\nUsername: ' + username + "\n\nاطلاعات دریافت اکانت\n" + t1
             cb = "Confirmed_" + code
             no = "NO❌_" + code
             keyboard = [[InlineKeyboardButton("Confirm✅", callback_data=cb), InlineKeyboardButton("NO❌", callback_data=no)], [InlineKeyboardButton("پیام به کاربر ✉️", callback_data='ANS_' + str(chat_id))]]
@@ -12278,7 +12278,7 @@ def image_users(bot, message):
             delete_all_buy(chat_id, "userdeposit")
             add_code_buy(chat_id, code, "userdeposit", cache_list)
             t1 = f"💰افزایش موجودی کیف پول\n\nPrice: {cache_list[0]}\nPayment: {cache_list[1]}"
-            text = "id: <code>" + str(chat_id) + "</code>\nName: " + name + '\nUsername: ' + username + "\n\nاطلاعات خرید:\n" + t1
+            text = "id: <code>" + str(chat_id) + "</code>\nName: " + name + '\nUsername: ' + username + "\n\nاطلاعات دریافت:\n" + t1
             cb = "ConfirmDeposit_" + code
             no = "NO❌_" + code
             keyboard = [[InlineKeyboardButton("Confirm✅", callback_data=cb), InlineKeyboardButton("NO❌", callback_data=no)], [InlineKeyboardButton("پیام به کاربر ✉️", callback_data='ANS_' + str(chat_id))]]
