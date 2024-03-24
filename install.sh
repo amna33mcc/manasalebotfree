@@ -39,7 +39,7 @@ mv /root/bot/data.json /root/
 
 rm -r /root/bot
 
-git clone "https://github.com/amna33mcc/manasalebot.git" /root/bot/
+git clone "https://github.com/amna33mcc/manasalebotfree.git" /root/bot/
 
 mv /root/botCh/Pannels.txt /root/bot
 mv /root/botCh/backup /root/bot
